@@ -8,7 +8,6 @@ const manifest: ManifestV3Export = {
   background: {
     service_worker: 'src/background/index.ts',
   },
-  host_permissions: ['<all_urls>'],
   options_ui: {
     page: 'src/options/options.html',
     open_in_tab: true,
@@ -25,17 +24,11 @@ const manifest: ManifestV3Export = {
   action: {
     default_popup: 'src/popup/popup.html',
     default_icon: {
-      '16': 'images/extension_16.png',
-      '32': 'images/extension_32.png',
-      '48': 'images/extension_48.png',
-      '128': 'images/extension_128.png',
+      '256': 'images/extension_256.png',
     },
   },
   icons: {
-    '16': 'images/extension_16.png',
-    '32': 'images/extension_32.png',
-    '48': 'images/extension_48.png',
-    '128': 'images/extension_128.png',
+    '256': 'images/extension_256.png',
   },
   permissions: ['tabGroups', 'tabs', 'notifications', 'unlimitedStorage', 'storage'],
 };
