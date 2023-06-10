@@ -8,12 +8,6 @@ const manifest: ManifestV3Export = {
   background: {
     service_worker: 'src/background/index.ts',
   },
-  content_scripts: [
-    {
-      matches: ['http://*/*', 'https://*/*', 'file:///*'],
-      js: ['src/content/index.tsx'],
-    },
-  ],
   host_permissions: ['<all_urls>'],
   options_ui: {
     page: 'src/options/options.html',

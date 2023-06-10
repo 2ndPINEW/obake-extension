@@ -1,11 +1,8 @@
 import browser from 'webextension-polyfill';
 
-import store from '../app/store';
 import { isDev } from '../shared/utils';
 
-store.subscribe(() => {
-  console.log('state', store.getState());
-});
+// これはRxJS の出番じゃね！
 
 // show welcome page on new install
 browser.runtime.onInstalled.addListener(async (details) => {
