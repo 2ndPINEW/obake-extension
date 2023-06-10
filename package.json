@@ -1,5 +1,6 @@
 {
-  "name": "browser-extension-react-ts-starter",
+  "name": "obake-extension",
+  "description": "Browser extension for Obake Terminal",
   "private": true,
   "version": "0.1.0",
   "scripts": {

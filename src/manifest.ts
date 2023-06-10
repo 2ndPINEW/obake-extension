@@ -2,8 +2,8 @@ import { ManifestV3Export } from '@crxjs/vite-plugin';
 
 const manifest: ManifestV3Export = {
   manifest_version: 3,
-  name: 'Browser Extension TypeScript & React Starter',
-  description: 'Browser Extension, TypeScript, React',
+  name: 'Obake Extension',
+  description: 'Browser extension for Obake Terminal',
   version: '0.1',
   background: {
     service_worker: 'src/background/index.ts',
