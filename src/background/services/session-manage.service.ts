@@ -7,15 +7,13 @@ import {
   SESSION_SAVE_PREFIX,
 } from '../../shared/constants/storageKey';
 import { getTerminalWorkspaceManagerInfo } from '../../shared/utils/api';
+import { setBadgeText } from '../../shared/utils/badge';
 
 /**
  * セッション管理するためのサービス
  * await SessionManageService.create() でインスタンスを生成する
  */
 export class SessionManageService {
-  setBadgeText(arg0: string) {
-    throw new Error('Method not implemented.');
-  }
   // 外からインスタンスを生成できないようにprivateにする
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
@@ -43,7 +41,7 @@ export class SessionManageService {
   private checkSessionChange = async () => {
     const mode = await this.getMode();
     if (mode === 'FREE') {
-      this.setBadgeText('Free');
+      setBadgeText('Free');
       return;
     }
     const currentTerminalWorkspaceInfo = await getTerminalWorkspaceManagerInfo();
@@ -52,14 +50,14 @@ export class SessionManageService {
       (workspace) => workspace.status === 'ACTIVE'
     );
     if (!activeTerminalWorkspace) {
-      this.setBadgeText('None');
+      setBadgeText('None');
       return;
     }
     if (!currentSessionInfo) {
       // 多分初回起動時
       await this.saveBrowserCurrentSessionName(activeTerminalWorkspace.name);
       await this.saveBrowserSessionTabs(activeTerminalWorkspace.name);
-      this.setBadgeText(activeTerminalWorkspace.name);
+      setBadgeText(activeTerminalWorkspace.name);
       return;
     }
     const nextSession = await this.getBrowserSessionInfo(activeTerminalWorkspace.name);
@@ -70,16 +68,16 @@ export class SessionManageService {
         tabs: [],
         lastModified: Date.now(),
       });
-      this.setBadgeText(activeTerminalWorkspace.name);
+      setBadgeText(activeTerminalWorkspace.name);
       return;
     }
     if (currentSessionInfo.name !== nextSession.name) {
       console.log('switch session');
       this.switchBrowserSession(currentSessionInfo, nextSession);
-      this.setBadgeText(nextSession.name);
+      setBadgeText(nextSession.name);
     }
     if (currentSessionInfo.name === nextSession.name) {
-      this.setBadgeText(currentSessionInfo.name);
+      setBadgeText(currentSessionInfo.name);
     }
   };
 
@@ -91,7 +89,7 @@ export class SessionManageService {
     // 古いセッションのタブを消す
     await this.closeBrowserTabs(currentTabs);
     await this.saveBrowserCurrentSessionName(nextSession.name);
-    this.setBadgeText(nextSession.name);
+    setBadgeText(nextSession.name);
   };
 
   private createTabs = async (tabs: Tabs.Tab[]) => {
