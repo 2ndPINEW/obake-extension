@@ -8,6 +8,7 @@ const manifest: ManifestV3Export = {
   background: {
     service_worker: 'src/background/index.ts',
   },
+  host_permissions: ['<all_urls>'],
   options_ui: {
     page: 'src/options/options.html',
     open_in_tab: true,
@@ -29,6 +30,15 @@ const manifest: ManifestV3Export = {
   },
   icons: {
     '256': 'images/extension_256.png',
+  },
+  commands: {
+    switchMode: {
+      suggested_key: {
+        default: 'Ctrl+M',
+        mac: 'Command+M',
+      },
+      description: 'モード切り替える',
+    },
   },
   permissions: ['tabGroups', 'tabs', 'notifications', 'unlimitedStorage', 'storage'],
 };

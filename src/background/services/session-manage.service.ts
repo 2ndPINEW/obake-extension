@@ -35,15 +35,20 @@ export class SessionManageService {
       }
     });
 
+    browser.commands.onCommand.addListener((command) => {
+      console.log(command);
+      switch (command) {
+        case 'switchMode':
+          this.switchMode();
+          break;
+      }
+    });
+
     this.checkSessionChange();
   };
 
   private checkSessionChange = async () => {
     const mode = await this.getMode();
-    if (mode === 'FREE') {
-      setBadgeText('Free');
-      return;
-    }
     const currentTerminalWorkspaceInfo = await getTerminalWorkspaceManagerInfo();
     const currentSessionInfo = await this.getBrowserCurrentSessionInfo();
     const activeTerminalWorkspace = currentTerminalWorkspaceInfo.workspaces.find(
@@ -58,6 +63,17 @@ export class SessionManageService {
       await this.saveBrowserCurrentSessionName(activeTerminalWorkspace.name);
       await this.saveBrowserSessionTabs(activeTerminalWorkspace.name);
       setBadgeText(activeTerminalWorkspace.name);
+      return;
+    }
+    // モードがFREEになった時はFREEモードにする
+    if (mode === 'FREE' && currentSessionInfo.name !== mode) {
+      const freeSessionInfo = await this.getBrowserSessionInfo(mode);
+      this.switchBrowserSession(currentSessionInfo, {
+        name: mode,
+        tabs: freeSessionInfo?.tabs ?? [],
+        lastModified: Date.now(),
+      });
+      setBadgeText(mode);
       return;
     }
     const nextSession = await this.getBrowserSessionInfo(activeTerminalWorkspace.name);
@@ -149,6 +165,12 @@ export class SessionManageService {
         lastModified: Date.now(),
       }
     );
+  };
+
+  private switchMode = async () => {
+    const mode = await this.getMode();
+    await this.setMode(mode === 'FREE' ? 'MANAGED' : 'FREE');
+    await this.checkSessionChange();
   };
 
   private getMode = async (): Promise<Mode> => {
